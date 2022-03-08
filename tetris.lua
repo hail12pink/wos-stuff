@@ -215,6 +215,8 @@ end)
 local endLoop = false
 
 GetPartFromPort(6, "Button"):Connect("OnClick", function()
+	LoopingSounds = {}
+	Speaker:ClearSounds()
 	endLoop = true
 end)
 
