@@ -37,6 +37,7 @@ local bg = Screen:CreateElement("ImageLabel", {
 			Position = UDim2.new(0, 0, 0, 0);
 			Image = "rbxassetid://8991379639";
 			ImageColor3 = Color3.fromRGB(162,203,153);
+			ResampleMode = "Pixelated";
 		})
 
 
@@ -152,6 +153,7 @@ for y = 1, 20 do
 			BackgroundTransparency = 1;
 			BorderSizePixel = 0;
 			ImageColor3 = Color3.fromRGB(162,203,153);
+			ResampleMode = "Pixelated";
 		})
 		grid[y][x] = {0, 0}
 		imgGrid[y][x] = image
@@ -168,6 +170,7 @@ function NumDrawer(x, y, len)
 			BackgroundTransparency = 1;
 			BorderSizePixel = 0;
 			ImageColor3 = Color3.fromRGB(162,203,153);
+			ResampleMode = "Pixelated";
 		}))
 	end
 	t.Update = function(val)
@@ -233,6 +236,7 @@ local next = Screen:CreateElement("ImageLabel", {
 						BackgroundTransparency = 1;
 						BorderSizePixel = 0;
 						ImageColor3 = Color3.fromRGB(162,203,153);
+						ResampleMode = "Pixelated";
 					})
 
 local nextPiece = math.random(1, 7)
@@ -391,6 +395,7 @@ while task.wait(speed) do
 											BackgroundColor3 =  Color3.fromRGB(63, 83, 49);
 											BorderSizePixel = 0;
 											ZIndex=100;
+											ResampleMode = "Pixelated";
 										}))
 								end
 							end
