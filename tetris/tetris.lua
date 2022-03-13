@@ -395,7 +395,6 @@ while task.wait(speed) do
 											BackgroundColor3 =  Color3.fromRGB(63, 83, 49);
 											BorderSizePixel = 0;
 											ZIndex=100;
-											ResampleMode = "Pixelated";
 										}))
 								end
 							end
