@@ -273,7 +273,7 @@ function TestCollision(shape, xShift, yShift)
 	return false
 end
 
-ButtonLeft:Connect("KeyInput", function()
+ButtonLeft:Connect("KeyPressed", function()
 	if current then
 		if not TestCollision(currentTab, -1, 0) then
 			currentX = currentX - 1
@@ -283,7 +283,7 @@ ButtonLeft:Connect("KeyInput", function()
 	end
 end)
 
-ButtonRight:Connect("KeyInput", function()
+ButtonRight:Connect("KeyPressed", function()
 	if current then
 		if not TestCollision(currentTab, 1, 0) then
 			currentX = currentX + 1
@@ -295,7 +295,7 @@ end)
 
 
 
-ButtonUp:Connect("KeyInput", function()
+ButtonUp:Connect("KeyPressed", function()
 	if current then
 		local rotated = rotate_CCW_90(rotate_CCW_90(rotate_CCW_90(currentTab)))
 		local pos = {0, -1, 1, -2, 2}
