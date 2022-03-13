@@ -2,11 +2,8 @@
 -- sugar plum fairy audio id 5670198522
 
 local Screen      = GetPartFromPort(1, "Screen")
-local ButtonRight = GetPartFromPort(1, "Button")
-local ButtonUp    = GetPartFromPort(2, "Button")
-local ButtonLeft  = GetPartFromPort(3, "Button")
-local ButtonDown  = GetPartFromPort(4, "Button")
-local Speaker     = GetPartFromPort(5, "Speaker")
+local Keyboard    = GetPartFromPort(1, "Keyboard")
+local Speaker     = GetPartFromPort(2, "Speaker")
 
 Speaker:ClearSounds()
 
@@ -21,24 +18,24 @@ function PlayAudio(position, speed, endtime, loop, loopname)
 		sound:Play() 
 		if loop then LoopingSounds[loopname] = true end
 		task.spawn(function() 
-				task.wait(endtime)
-				if loopname and LoopingSounds[loopname] then
-					PlayAudio(position, speed, endtime, loop, loopname)
-				end
-				sound:Destroy()
-			end)
+			task.wait(endtime)
+			if loopname and LoopingSounds[loopname] then
+				PlayAudio(position, speed, endtime, loop, loopname)
+			end
+			sound:Destroy()
+		end)
 	end
 	return sound
 end
 
 Screen:ClearElements()
 local bg = Screen:CreateElement("ImageLabel", {
-			Size = UDim2.new(1, 0, 1, 0);
-			Position = UDim2.new(0, 0, 0, 0);
-			Image = "rbxassetid://8991379639";
-			ImageColor3 = Color3.fromRGB(162,203,153);
-			ResampleMode = "Pixelated";
-		})
+	Size = UDim2.new(1, 0, 1, 0);
+	Position = UDim2.new(0, 0, 0, 0);
+	Image = "rbxassetid://8991379639";
+	ImageColor3 = Color3.fromRGB(162,203,153);
+	ResampleMode = "Pixelated";
+})
 
 
 local assets = {
@@ -128,15 +125,15 @@ local direction = {
 
 -- stolen from stackexchange ez
 function rotate_CCW_90(m)
-   local rotated = {}
-   for c, m_1_c in ipairs(m[1]) do
-      local col = {m_1_c}
-      for r = 2, #m do
-         col[r] = m[r][c]
-      end
-      table.insert(rotated, 1, col)
-   end
-   return rotated
+	local rotated = {}
+	for c, m_1_c in ipairs(m[1]) do
+		local col = {m_1_c}
+		for r = 2, #m do
+			col[r] = m[r][c]
+		end
+		table.insert(rotated, 1, col)
+	end
+	return rotated
 end
 
 local grid = {}
@@ -230,14 +227,14 @@ function UpdateGrid()
 end
 
 local next = Screen:CreateElement("ImageLabel", {
-						Size = UDim2.fromScale(0.523, 1);
-						Position = UDim2.fromScale(0.735 , 0.777);
-						Image = "";
-						BackgroundTransparency = 1;
-						BorderSizePixel = 0;
-						ImageColor3 = Color3.fromRGB(162,203,153);
-						ResampleMode = "Pixelated";
-					})
+	Size = UDim2.fromScale(0.523, 1);
+	Position = UDim2.fromScale(0.735 , 0.777);
+	Image = "";
+	BackgroundTransparency = 1;
+	BorderSizePixel = 0;
+	ImageColor3 = Color3.fromRGB(162,203,153);
+	ResampleMode = "Pixelated";
+})
 
 local nextPiece = math.random(1, 7)
 function GenerateNewPiece()
@@ -273,40 +270,43 @@ function TestCollision(shape, xShift, yShift)
 	return false
 end
 
-ButtonLeft:Connect("KeyPressed", function()
-	if current then
-		if not TestCollision(currentTab, -1, 0) then
-			currentX = currentX - 1
-			PlayAudio(26.6, 1, 0.3)
-			UpdateGrid()
+Keyboard:Connect("KeyPressed", function(key)
+	print(key)
+
+	if key == Enum.KeyCode.A then
+		print("eft")
+		
+		if current then
+			if not TestCollision(currentTab, -1, 0) then
+				currentX = currentX - 1
+				PlayAudio(26.6, 1, 0.3)
+				UpdateGrid()
+			end
 		end
-	end
-end)
-
-ButtonRight:Connect("KeyPressed", function()
-	if current then
-		if not TestCollision(currentTab, 1, 0) then
-			currentX = currentX + 1
-			PlayAudio(26.6, 1, 0.3)
-			UpdateGrid()
+	elseif key == Enum.KeyCode.D then
+		print("right")
+		if current then
+			if not TestCollision(currentTab, 1, 0) then
+				currentX = currentX + 1
+				PlayAudio(26.6, 1, 0.3)
+				UpdateGrid()
+			end
 		end
-	end
-end)
-
-
-
-ButtonUp:Connect("KeyPressed", function()
-	if current then
-		local rotated = rotate_CCW_90(rotate_CCW_90(rotate_CCW_90(currentTab)))
-		local pos = {0, -1, 1, -2, 2}
-		for _,v in pairs(pos) do
-			if not TestCollision(rotated, v, 0) then
-				PlayAudio(27, 1, 0.5)
-				currentTab = rotated
-				currentX = currentX + v
-				rotation += 90
-				if rotation == 360 then rotation = 0 end
-				return
+	elseif key == Enum.KeyCode.R then
+		print("rotate")
+		
+		if current then
+			local rotated = rotate_CCW_90(rotate_CCW_90(rotate_CCW_90(currentTab)))
+			local pos = {0, -1, 1, -2, 2}
+			for _,v in pairs(pos) do
+				if not TestCollision(rotated, v, 0) then
+					PlayAudio(27, 1, 0.5)
+					currentTab = rotated
+					currentX = currentX + v
+					rotation += 90
+					if rotation == 360 then rotation = 0 end
+					return
+				end
 			end
 		end
 	end
@@ -314,7 +314,7 @@ end)
 
 local endLoop = false
 
-GetPartFromPort(6, "Button"):Connect("OnClick", function()
+GetPartFromPort(2, "Button"):Connect("OnClick", function()
 	LoopingSounds = {}
 	Speaker:ClearSounds()
 	endLoop = true
@@ -359,7 +359,7 @@ while task.wait(speed) do
 						BorderSizePixel = 0;
 						ImageColor3 = Color3.fromRGB(162,203,153);
 					})
-					
+
 					current = nil
 				else 
 					placing = false
@@ -418,8 +418,8 @@ while task.wait(speed) do
 							wait(0.2)
 						end
 						for _,v in pairs(flashers) do
-								v:Destroy()
-							end
+							v:Destroy()
+						end
 						for _,v in pairs(linesCleared) do
 							table.remove(grid, v)
 							table.insert(grid, 1, {{0, 0},{0, 0},{0, 0},{0, 0},{0, 0},{0, 0},{0, 0},{0, 0},{0, 0},{0, 0}})
