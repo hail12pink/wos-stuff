@@ -1,9 +1,16 @@
 -- WOS Tetris
 -- sugar plum fairy audio id 5670198522
 
+--[[ stuff (all on port 1)
+SCREEN, (display)
+KEYBOARD, (input)
+SPEAKER, (audio)
+BUTTON (off button)
+]]--
+
 local Screen      = GetPartFromPort(1, "Screen")
 local Keyboard    = GetPartFromPort(1, "Keyboard")
-local Speaker     = GetPartFromPort(2, "Speaker")
+local Speaker     = GetPartFromPort(1, "Speaker")
 
 Speaker:ClearSounds()
 
@@ -314,7 +321,7 @@ end)
 
 local endLoop = false
 
-GetPartFromPort(2, "Button"):Connect("OnClick", function()
+GetPartFromPort(1, "Button"):Connect("OnClick", function()
 	LoopingSounds = {}
 	Speaker:ClearSounds()
 	endLoop = true
