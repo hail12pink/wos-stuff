@@ -1,11 +1,21 @@
 -- WOS Tetris
 -- sugar plum fairy audio id 5670198522
 
---[[ stuff (all on port 1)
-SCREEN, (display)
-KEYBOARD, (input)
-SPEAKER, (audio)
-BUTTON (off button)
+--[[
+
+STUFF (all on port 1):
+
+Screen, (display)
+Keyboard, (input)
+Speaker, (audio)
+Button (off button)
+
+CONTROLS (keyboard):
+
+R - Rotate
+A - Left
+D - Right
+
 ]]--
 
 local Screen      = GetPartFromPort(1, "Screen")
