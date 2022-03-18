@@ -98,7 +98,7 @@ end
 Pipe(0.4, false)
 Pipe(0.2, true)
 
-GetPort(2):ConnectToEvent("Triggered", Flap)
+GetPort(2):Connect("Triggered", Flap)
 local scoregui = Screen:CreateElement("TextLabel", {
 		Text = "0";
 		TextColor3 = Color3.new(1, 1, 1);
