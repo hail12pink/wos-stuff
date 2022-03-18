@@ -150,8 +150,8 @@ function KeyInput(player, key)
 	end
 end
 
-player1keyboard:ConnectToEvent("KeyPressed", function(key) KeyInput(1, key) end)
-player2keyboard:ConnectToEvent("KeyPressed", function(key) KeyInput(2, key) end)
+player1keyboard:Connect("KeyPressed", function(key) KeyInput(1, key) end)
+player2keyboard:Connect("KeyPressed", function(key) KeyInput(2, key) end)
 
 
 function AABBcoll(rectA, rectB)
