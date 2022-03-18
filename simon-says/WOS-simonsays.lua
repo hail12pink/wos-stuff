@@ -136,7 +136,7 @@ for i,v in pairs(colors) do
 		BorderColor3 = Color3.new(0.6, 0.6, 0.6)
 	})
 	table.insert(colorrects, crect)
-	colors[i]:ConnectToEvent("Triggered", function() onColorClick(colorstring[i], i, crect, false) end)
+	colors[i]:Connect("Triggered", function() onColorClick(colorstring[i], i, crect, false) end)
 end
 
 rand()
