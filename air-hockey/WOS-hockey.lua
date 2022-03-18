@@ -193,7 +193,7 @@ function AABBcoll(rectA, rectB)
     return ax2 > rectB.x and bx2 > rectA.x and ay2 > rectB.y and by2 > rectA.y
 end
 
-TouchScreen:ConnectToEvent("CursorMoved", function(cursor)
+TouchScreen:Connect("CursorMoved", function(cursor)
 	if cursor.Player == playerR and game then
 		cursor.Y = math.clamp(cursor.Y, 0, 155*5/2)
 		paddleR:ChangeProperties({
