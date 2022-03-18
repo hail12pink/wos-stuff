@@ -157,7 +157,7 @@ local function newText()
 end
 
 
-input:ConnectToEvent("TextInputted", keyInput)
+input:Connect("TextInputted", keyInput)
 title()
 
 local timer = 0
