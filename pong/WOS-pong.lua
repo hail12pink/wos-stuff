@@ -48,7 +48,7 @@ function initGame()
 				BackgroundTransparency = 1;
 				BorderSizePixel = 0;
 			})
-			wait(2)
+			task.wait(2)
 			initTitle()
 		else
 			wintext = graphics:CreateElement("TextBox", {
@@ -62,7 +62,7 @@ function initGame()
 				BackgroundTransparency = 1;
 				BorderSizePixel = 0;
 			})
-			wait(2)
+			task.wait(2)
 			initTitle()
 		end
 	else
@@ -108,7 +108,7 @@ function initGame()
 			BackgroundTransparency = 1;
 			BorderSizePixel = 0;
 		})
-		wait(1)
+		task.wait(1)
 		ballx = 0.5
 		bally = 0.5
 		xBounce = 0.01
