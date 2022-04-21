@@ -162,7 +162,7 @@ end
 local rectP1 = {x = 0.05, y = player1y, width = 0.05, height = 0.25}
 local rectP2 = {x = 0.9, y = player2y, width = 0.05, height = 0.25}
 local rectBall = {x = ballx, y = bally, width = 0.03, height = 0.05}
-while true do
+while wait() do
 	if game then
 		if bally < 0 then yBounce = 0.02 end
 		if bally > 1 - 0.05 then yBounce = -0.02 end
