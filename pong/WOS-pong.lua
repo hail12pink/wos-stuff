@@ -126,9 +126,9 @@ function KeyInput(player, key)
 	print(key)
 	if game then
 		local mod = 0
-		if key == "W" then
+		if key == Enum.KeyCode.W then
 			mod = -0.05
-		elseif key == "S" then
+		elseif key == Enum.KeyCode.S then
 			mod = 0.05
 		end
 		if player == 1 then
