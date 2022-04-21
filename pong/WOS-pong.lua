@@ -123,6 +123,7 @@ end
 initTitle()
 
 function KeyInput(player, key)
+	print(key)
 	if game then
 		local mod = 0
 		if key == "W" then
