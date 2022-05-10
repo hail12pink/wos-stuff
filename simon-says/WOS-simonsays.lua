@@ -62,7 +62,7 @@ local function onColorClick(color, i, rect, skipCheck)
 		rect:ChangeProperties({
 			BackgroundColor3 = Color3.new(rgb_active[i][1], rgb_active[i][2], rgb_active[i][3])
 		})
-		wait(0.5)
+		task.wait(0.5)
 		rect:ChangeProperties({
 			BackgroundColor3 = Color3.new(rgb[i][1], rgb[i][2], rgb[i][3])
 		})
@@ -76,7 +76,7 @@ local function onColorClick(color, i, rect, skipCheck)
 					hold = true
 					plrSequence = {}
 					PressButtonEnabled = false
-					wait(1)
+					task.wait(1)
 					rand()
 				else
 					updateState("GAME OVER")
@@ -87,7 +87,7 @@ local function onColorClick(color, i, rect, skipCheck)
 					plrSequence = {}
 					updateScore()
 					PressButtonEnabled = false
-					wait(1)
+					task.wait(1)
 					PressButtonEnabled = true
 					updateState("PRESS BUTTON TO START")
 				end
@@ -102,17 +102,17 @@ function rand()
 	plrSequence = {}
 	updateState("COPY THIS")
 	hold = false
-	wait(0.5)
+	task.wait(0.5)
 	for i = 1, math.random(3, 3 + (score/2)) do
 		table.insert(pattern, math.random(1, 4))
 	end
 	for i,v in pairs(pattern) do
 		onColorClick(colorstring[v], v, colorrects[v], true)
-		wait(1 - (score / 10))
+		task.wait(1 - (score / 10))
 	end
 	PressButtonEnabled = true
 	for i = 1, 10 do
-		wait(1 - (score / 15))
+		task.wait(1 - (score / 15))
 		if hold then return end
 		updateState(i)
 	end
@@ -122,7 +122,7 @@ function rand()
 	updateScore()
 	gameover = true
 	PressButtonEnabled = false
-	wait(1)
+	task.wait(1)
 	PressButtonEnabled = true
 	updateState("PRESS BUTTON TO START")
 end

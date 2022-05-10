@@ -337,7 +337,7 @@ while true do
 					TextColor3 = Color3.new(wincolor[1], wincolor[2], wincolor[3])
 				})
 				
-				wait(2)
+				task.wait(2)
 				
 				victory1:ChangeProperties({
 					Text = "";
@@ -366,7 +366,7 @@ while true do
 						TextColor3 = Color3.new(wincolor[1], wincolor[2], wincolor[3])
 					})
 					
-					wait(2)
+					task.wait(2)
 					titleScreen()
 					pointsB = 0
 					pointsR = 0

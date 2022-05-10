@@ -48,7 +48,7 @@ function initGame()
 				BackgroundTransparency = 1;
 				BorderSizePixel = 0;
 			})
-			wait(2)
+			task.wait(2)
 			initTitle()
 		else
 			wintext = graphics:CreateElement("TextBox", {
@@ -62,7 +62,7 @@ function initGame()
 				BackgroundTransparency = 1;
 				BorderSizePixel = 0;
 			})
-			wait(2)
+			task.wait(2)
 			initTitle()
 		end
 	else
@@ -108,7 +108,7 @@ function initGame()
 			BackgroundTransparency = 1;
 			BorderSizePixel = 0;
 		})
-		wait(1)
+		task.wait(1)
 		ballx = 0.5
 		bally = 0.5
 		xBounce = 0.01
@@ -163,7 +163,7 @@ end
 local rectP1 = {x = 0.05, y = player1y, width = 0.05, height = 0.25}
 local rectP2 = {x = 0.9, y = player2y, width = 0.05, height = 0.25}
 local rectBall = {x = ballx, y = bally, width = 0.03, height = 0.05}
-while wait() do
+while task.wait() do
 	if game then
 		if bally < 0 then yBounce = 0.02 end
 		if bally > 1 - 0.05 then yBounce = -0.02 end

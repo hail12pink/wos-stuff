@@ -411,11 +411,11 @@ while task.wait(speed) do
 							for _,v in pairs(flashers) do
 								v.BackgroundTransparency = 1
 							end
-							wait(0.2)
+							task.wait(0.2)
 							for _,v in pairs(flashers) do
 								v.BackgroundTransparency = 0
 							end
-							wait(0.2)
+							task.wait(0.2)
 						end
 						for _,v in pairs(flashers) do
 								v:Destroy()
