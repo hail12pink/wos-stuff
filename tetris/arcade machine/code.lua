@@ -320,7 +320,6 @@ while task.wait(speed) do
 			if placing == true then
 				if currentY == 0 then
 					currentTab = {{0}}
-					Speaker:ClearSounds()
 					task.wait(0.1)
 					for y = 1, 20 do
 						for x = 1, 10 do
