@@ -6,6 +6,8 @@ local ButtonRight = GetPartFromPort(1, "Button")
 local ButtonUp    = GetPartFromPort(2, "Button")
 local ButtonLeft  = GetPartFromPort(3, "Button")
 local ButtonDown  = GetPartFromPort(4, "Button")
+
+--[[
 local Speaker     = GetPartFromPort(5, "Speaker")
 
 Speaker:ClearSounds()
@@ -30,6 +32,7 @@ function PlayAudio(position, speed, endtime, loop, loopname)
 	end
 	return sound
 end
+]]--
 
 Screen:ClearElements()
 local bg = Screen:CreateElement("ImageLabel", {
@@ -277,7 +280,7 @@ ButtonLeft:Connect("OnClick", function()
 	if current then
 		if not TestCollision(currentTab, -1, 0) then
 			currentX = currentX - 1
-			PlayAudio(26.6, 1, 0.3)
+			--PlayAudio(26.6, 1, 0.3)
 			UpdateGrid()
 		end
 	end
@@ -287,7 +290,7 @@ ButtonRight:Connect("OnClick", function()
 	if current then
 		if not TestCollision(currentTab, 1, 0) then
 			currentX = currentX + 1
-			PlayAudio(26.6, 1, 0.3)
+			--PlayAudio(26.6, 1, 0.3)
 			UpdateGrid()
 		end
 	end
@@ -301,7 +304,7 @@ ButtonUp:Connect("OnClick", function()
 		local pos = {0, -1, 1, -2, 2}
 		for _,v in pairs(pos) do
 			if not TestCollision(rotated, v, 0) then
-				PlayAudio(27, 1, 0.5)
+				--PlayAudio(27, 1, 0.5)
 				currentTab = rotated
 				currentX = currentX + v
 				rotation += 90
@@ -322,7 +325,7 @@ end)
 
 local placing = false
 
-PlayAudio(13.5, 1/3, 39, true, "ThemeA")
+--PlayAudio(13.5, 1/3, 39, true, "ThemeA")
 
 
 while task.wait(speed) do
@@ -335,13 +338,13 @@ while task.wait(speed) do
 			currentY = currentY + 1
 		else
 			if placing == true then
-				PlayAudio(30, 1, 0.5)
+				--PlayAudio(30, 1, 0.5)
 				if currentY == 0 then
 					currentTab = {{0}}
 					LoopingSounds["ThemeA"] = false
 					Speaker:ClearSounds()
 					task.wait(0.1)
-					PlayAudio(31.8, 1, 1)
+					--PlayAudio(31.8, 1, 1)
 					for y = 1, 20 do
 						for x = 1, 10 do
 							grid[20-y+1][x][1] = 2
@@ -350,7 +353,7 @@ while task.wait(speed) do
 						task.wait(0.05)
 					end
 					task.wait(0.2)
-					PlayAudio(33, 1, 2)
+					--PlayAudio(33, 1, 2)
 					local gameover = Screen:CreateElement("ImageLabel", {
 						Size = UDim2.fromScale(0.523, 1);
 						Position = UDim2.fromScale(0.0523, 0);
@@ -403,9 +406,9 @@ while task.wait(speed) do
 					if #linesCleared > 0 then
 						didClear = true
 						if #linesCleared < 4 then
-							PlayAudio(28, 1, 0.5)
+							--PlayAudio(28, 1, 0.5)
 						else
-							PlayAudio(30.5, 1, 2)
+							--PlayAudio(30.5, 1, 2)
 						end
 						for i=1, 3 do
 							for _,v in pairs(flashers) do
@@ -432,7 +435,7 @@ while task.wait(speed) do
 							levelProg = 0
 							level = level + 1
 							speed = speed / 1.5
-							PlayAudio(29, 1, 1)
+							--PlayAudio(29, 1, 1)
 						end
 						linesVal.Update(tostring(lines))
 						linesCleared = {}
@@ -440,7 +443,7 @@ while task.wait(speed) do
 					end
 					task.wait(0.2)
 					if didClear then
-						PlayAudio(30, 0.7, 0.8)
+						--PlayAudio(30, 0.7, 0.8)
 					end
 					GenerateNewPiece()
 				end
