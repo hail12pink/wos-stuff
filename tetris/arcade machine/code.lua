@@ -4,6 +4,7 @@ STUFF (all on port 1):
 
 Screen, (display)
 Keyboard, (input)
+Disc, (high score storage)
 Button (off button)
 
 CONTROLS (keyboard):
@@ -14,10 +15,17 @@ D - Right
 
 ]]--
 
+local inGame = false
+
+
 local Screen      = GetPartFromPort(1, "Screen")
 local Keyboard    = GetPartFromPort(1, "Keyboard")
+local Disk        = GetPartFromPort(1, "Disk")
+
+local hiScorePts = Disk:Read("HighScore") or 0
 
 Screen:ClearElements()
+
 local bg = Screen:CreateElement("ImageLabel", {
 	Size = UDim2.new(1, 0, 1, 0);
 	Position = UDim2.new(0, 0, 0, 0);
@@ -25,6 +33,18 @@ local bg = Screen:CreateElement("ImageLabel", {
 	ImageColor3 = Color3.fromRGB(162,203,153);
 	ResampleMode = "Pixelated";
 })
+
+local title = Screen:CreateElement("ImageLabel", {
+	Size = UDim2.new(1, 0, 1, 0);
+	Position = UDim2.new(0, 0, 0, 0);
+	Image = "rbxassetid://10467157902";
+    ZIndex = 99;
+	ImageColor3 = Color3.fromRGB(162,203,153);
+    BackgroundTransparency = 1;
+    BorderSizePixel = 0;
+	ResampleMode = "Pixelated";
+})
+
 
 
 local assets = {
@@ -146,7 +166,7 @@ for y = 1, 20 do
 	end
 end
 
-function NumDrawer(x, y, len)
+function NumDrawer(x, y, len, zindex)
 	local t = {}
 	for i=1, len do
 		table.insert(t, Screen:CreateElement("ImageLabel", {
@@ -157,6 +177,7 @@ function NumDrawer(x, y, len)
 			BorderSizePixel = 0;
 			ImageColor3 = Color3.fromRGB(162,203,153);
 			ResampleMode = "Pixelated";
+            ZIndex = zindex or 1;
 		}))
 	end
 	t.Update = function(val)
@@ -175,6 +196,9 @@ function NumDrawer(x, y, len)
 	return t
 end
 
+local hiScore = NumDrawer(0.952, 0.85, 6, 100)
+hiScore.Update(tostring(hiScorePts))
+
 local score = 0
 local scoreVal = NumDrawer(0.952, 0.1734375, 6)
 local level = 0
@@ -182,6 +206,7 @@ local levelVal = NumDrawer(0.952, 0.39, 2)
 local lines = 0
 local levelProg = 0
 local linesVal = NumDrawer(0.952, 0.56, 3)
+
 
 local linesToScore = {
 	40, 100, 300, 1200
@@ -237,7 +262,6 @@ function GenerateNewPiece()
 	local nextTab = blockdata[nextPiece]
 	next.Size = UDim2.fromScale(#nextTab * 0.0523, #nextTab[1] * 0.0555)
 end
-GenerateNewPiece()
 
 function TestCollision(shape, xShift, yShift)
 	for cY, tab in pairs(shape) do
@@ -260,59 +284,62 @@ function TestCollision(shape, xShift, yShift)
 end
 
 Keyboard:Connect("KeyPressed", function(key)
-	print(key)
-
-	if key == Enum.KeyCode.A then
-		print("eft")
-		
-		if current then
-			if not TestCollision(currentTab, -1, 0) then
-				currentX = currentX - 1
-				UpdateGrid()
-			end
-		end
-	elseif key == Enum.KeyCode.D then
-		print("right")
-		if current then
-			if not TestCollision(currentTab, 1, 0) then
-				currentX = currentX + 1
-				UpdateGrid()
-			end
-		end
-	elseif key == Enum.KeyCode.R then
-		print("rotate")
-		
-		if current then
-			local rotated = rotate_CCW_90(rotate_CCW_90(rotate_CCW_90(currentTab)))
-			local pos = {0, -1, 1, -2, 2}
-			for _,v in pairs(pos) do
-				if not TestCollision(rotated, v, 0) then
-					currentTab = rotated
-					currentX = currentX + v
-					rotation += 90
-					if rotation == 360 then rotation = 0 end
-					return
-				end
-			end
-		end
-	end
+    if inGame then
+        if key == Enum.KeyCode.A then
+            if current then
+                if not TestCollision(currentTab, -1, 0) then
+                    currentX = currentX - 1
+                    UpdateGrid()
+                end
+            end
+        elseif key == Enum.KeyCode.D then
+            if current then
+                if not TestCollision(currentTab, 1, 0) then
+                    currentX = currentX + 1
+                    UpdateGrid()
+                end
+            end
+        elseif key == Enum.KeyCode.R then
+            if current then
+                local rotated = rotate_CCW_90(rotate_CCW_90(rotate_CCW_90(currentTab)))
+                local pos = {0, -1, 1, -2, 2}
+                for _,v in pairs(pos) do
+                    if not TestCollision(rotated, v, 0) then
+                        currentTab = rotated
+                        currentX = currentX + v
+                        rotation += 90
+                        if rotation == 360 then rotation = 0 end
+                        return
+                    end
+                end
+            end
+        end
+    else
+        inGame = true
+        title.ImageTransparency = 1
+        GenerateNewPiece()
+        hiScore.Update("")
+        linesVal.Update("0")
+        scoreVal.Update("0")
+        levelVal.Update("0")
+        task.wait(1)
+        StartLoop()
+    end
 end)
 
 local endLoop = false
 
 GetPartFromPort(1, "Button"):Connect("OnClick", function()
+    Screen:ClearElements()
+    if not inGame then error() end
 	endLoop = true
 end)
 
 local placing = false
 
 
-
-while task.wait(speed) do
-	if endLoop then 
-		Screen:ClearElements()
-		error() 
-	end
+function StartLoop()
+while task.wait() and inGame do
 	if current then
 		if not TestCollision(currentTab, 0, 1) then
 			currentY = currentY + 1
@@ -333,12 +360,36 @@ while task.wait(speed) do
 						Size = UDim2.fromScale(0.523, 1);
 						Position = UDim2.fromScale(0.0523, 0);
 						Image = "rbxassetid://9081027252";
+                        ResampleMode = "Pixelated";
 						BackgroundTransparency = 1;
 						BorderSizePixel = 0;
 						ImageColor3 = Color3.fromRGB(162,203,153);
 					})
+                    task.wait(5)
+                    for y = 1, 20 do
+                        grid[y] = {}
+                        for x = 1, 10 do
+                            grid[y][x] = {0, 0}
+                        end
+                    end
+                    UpdateGrid()
+                    gameover:Destroy()
+                    if score > hiScorePts then
+                        hiScorePts = score
+                        Disk:Write("HighScore", score)
+                        
+                    end
+                    hiScore.Update(tostring(hiScorePts))
 
+                    inGame = false
+                    title.ImageTransparency = 0
 					current = nil
+                    score = 0
+                    level = 0
+                    levelProg = 0
+                    lines = 0
+                    
+                    
 				else 
 					placing = false
 					for cY, tab in pairs(currentTab) do
@@ -418,4 +469,5 @@ while task.wait(speed) do
 		end
 		UpdateGrid()
 	end
+end
 end
