@@ -1,6 +1,5 @@
 local TouchScreen = GetPartFromPort(1, "TouchScreen")
 
-
 TouchScreen:ClearElements()
 
 local background = TouchScreen:CreateElement("ImageLabel", {
@@ -12,7 +11,7 @@ Image = "http://www.roblox.com/asset/?id=5041064379";
 
 local scorerect = TouchScreen:CreateElement("Frame", {
 Position = UDim2.fromOffset(0 - 50, 155*5/2 - 25);
-Size = UDim2.fromOffset(150, 50);
+Size = UDim2.fromOffset(150, 70);
 Rotation = 90;
 BorderSizePixel = 5;
 BackgroundColor3 = Color3.new(0.4, 0.4, 0.4);
@@ -56,7 +55,7 @@ Image = "http://www.roblox.com/asset/?id=5041127888";
 
 local paddleR = TouchScreen:CreateElement("ImageLabel", {
 Position = UDim2.fromScale(-500, -500);
-Size = UDim2.fromOffset(80, 80);
+Size = UDim2.fromOffset(60, 60);
 BackgroundTransparency = 1;
 BorderSizePixel = 0;
 Image = "http://www.roblox.com/asset/?id=5041129017";
@@ -64,7 +63,7 @@ Image = "http://www.roblox.com/asset/?id=5041129017";
 
 local paddleB = TouchScreen:CreateElement("ImageLabel", {
 Position = UDim2.fromScale(-500, -500);
-Size = UDim2.fromOffset(80, 80);
+Size = UDim2.fromOffset(60, 60);
 BackgroundTransparency = 1;
 BorderSizePixel = 0;
 Image = "http://www.roblox.com/asset/?id=5041128448";
@@ -197,13 +196,13 @@ TouchScreen:Connect("CursorMoved", function(cursor)
 	if cursor.Player == playerR and game then
 		cursor.Y = math.clamp(cursor.Y, 0, 155*5/2)
 		paddleR:ChangeProperties({
-			Position = UDim2.fromOffset(cursor.X - 40, cursor.Y - 40)
+			Position = UDim2.fromOffset(cursor.X - 30, cursor.Y - 30)
 		})
 		currentplayer = 0
 	elseif cursor.Player == playerB and game then
 		cursor.Y = math.clamp(cursor.Y, 155*5/2, 155*5)
 		paddleB:ChangeProperties({
-			Position = UDim2.fromOffset(cursor.X - 40, cursor.Y - 40)
+			Position = UDim2.fromOffset(cursor.X - 30, cursor.Y - 30)
 		})
 		currentplayer = 2
 	end
@@ -261,16 +260,21 @@ TouchScreen:Connect("CursorMoved", function(cursor)
 			redJoin:ChangeProperties({
 				Transparency = 1;
 			})
+            StartLoop()
 		end
 	end
 
-	local isColliding = math.abs((cursor.X - 40 - puckP.x) * (cursor.X - 40 - puckP.x) + (cursor.Y - 40 - puckP.y) * (cursor.Y - 40 - puckP.y)) < (40 + 30) * (40 + 30)
+	local isColliding = math.abs((cursor.X - 30 - puckP.x) * (cursor.X - 30 - puckP.x) + (cursor.Y - 30 - puckP.y) * (cursor.Y - 30 - puckP.y)) < (30 + 30) * (30 + 30)
 	if isColliding and old then
 		--336216725
-		puckP.xv = puckP.xv + ((cursor.X - old[1 + currentplayer]) / 5) + (((puckP.x + 30) - cursor.X) / 5)
-		puckP.yv = puckP.yv + ((cursor.Y - old[2 + currentplayer]) / 5) + (((puckP.y + 30) - cursor.Y) / 5)
+        print(((cursor.X - old[1 + currentplayer]) / 15))
+		--puckP.xv = puckP.xv + (((cursor.X - old[1 + currentplayer]) / 15)) + (((puckP.x + 30) - cursor.X) * 0)
+		--puckP.yv = puckP.yv + (((cursor.Y - old[2 + currentplayer]) / 15)) + (((puckP.y + 30) - cursor.Y) * 0)
 		local difference = Vector2.new(cursor.X - puckP.x, cursor.Y - puckP.y)
-		
+
+		puckP.xv = puckP.xv * -1 + math.clamp((cursor.X - old[1 + currentplayer]) / 5, -7, 7)
+        puckP.yv = puckP.yv * -1 + math.clamp((cursor.Y - old[2 + currentplayer]) / 5, -7, 7)
+        
         puckP.x = puckP.x + ((15 + 30) - difference.X) / 4
         puckP.y = puckP.y + ((15 + 30) - difference.Y) / 4
 	end
@@ -291,124 +295,123 @@ function pointAABBcoll(point, rectangle)
 	RightEdgeX > point.x
 end
 
+function StartLoop()
+    while game do
+        local delta = task.wait()
+        if puckP.xv > 0 then
+            puckP.xv = math.floor((puckP.xv - 1 * delta) * 1000) / 1000
+        elseif puckP.xv < 0 then
+            puckP.xv = math.floor((puckP.xv + 1 * delta) * 1000) / 1000
+        end
+        if puckP.yv > 0 then
+            puckP.yv = math.floor((puckP.yv - 1 * delta) * 1000) / 1000
+        elseif puckP.yv < 0 then
+            puckP.yv = math.floor((puckP.yv + 1 * delta) * 1000) / 1000
+        end
 
-while true do
-	if game then
-		
-		if puckP.xv > 0 then puckP.xv = puckP.xv - 0.5 end
-		if puckP.xv < 0 then puckP.xv = puckP.xv + 0.5 end
-		if puckP.yv > 0 then puckP.yv = puckP.yv - 0.5 end
-		if puckP.yv < 0 then puckP.yv = puckP.yv + 0.5 end
-		if math.floor(puckP.xv * 2) / 2 == 0 then puckP.xv = 0 end
-		if math.floor(puckP.yv * 2) / 2 == 0 then puckP.yv = 0 end
-		if puckP.xv > 0 then puckP.xv = puckP.xv - 0.5 end
-		if puckP.xv < 0 then puckP.xv = puckP.xv + 0.5 end
-		if puckP.yv > 0 then puckP.yv = puckP.yv - 0.5 end
-		if puckP.yv < 0 then puckP.yv = puckP.yv + 0.5 end
-		if math.floor(puckP.xv * 2) / 2 == 0 then puckP.xv = 0 end
-		if math.floor(puckP.yv * 2) / 2 == 0 then puckP.yv = 0 end
-		puckP.x = puckP.x + puckP.xv
-		puckP.y = puckP.y + puckP.yv
-		-- 85*5, 155*5
-		
-		if puckP.y < 0 or puckP.y > (155*5 - 60) then
-			if not (puckP.x > 140 and puckP.x < 240) then
-				puckP.yv = puckP.yv * -1
-				puckP.y = math.clamp(puckP.y, 0, 155*5 - 60)
-			elseif puckP.y < -60 or puckP.y > 155*5 then
-				local winner, wincolor
-				if puckP.y < -60 then
-					winner = "BLUE"
-					pointsB = pointsB + 1
-					wincolor = {0.4, 0.4, 0.8}
-				else
-					winner = "RED"
-					pointsR = pointsR + 1
-					wincolor = {0.8, 0.4, 0.4}
-				end
-				
-				victory1:ChangeProperties({
-					Text = winner .. " SCORES";
-					TextColor3 = Color3.new(wincolor[1], wincolor[2], wincolor[3])
-				})
-				
-				victory2:ChangeProperties({
-					Text = winner .. " SCORES";
-					TextColor3 = Color3.new(wincolor[1], wincolor[2], wincolor[3])
-				})
-				
-				task.wait(2)
-				
-				victory1:ChangeProperties({
-					Text = "";
-				})
-				
-				victory2:ChangeProperties({
-					Text = "";
-				})
-				
-				Bscore:ChangeProperties({
-					Text = pointsB;
-				})
-				
-				Rscore:ChangeProperties({
-					Text = pointsR;
-				})
-				
-				if pointsR > 4 or pointsB > 4 then
-					victory1:ChangeProperties({
-						Text = winner .. " WINS";
-						TextColor3 = Color3.new(wincolor[1], wincolor[2], wincolor[3])
-					})
-				
-					victory2:ChangeProperties({
-						Text = winner .. " WINS";
-						TextColor3 = Color3.new(wincolor[1], wincolor[2], wincolor[3])
-					})
-					
-					task.wait(2)
-					titleScreen()
-					pointsB = 0
-					pointsR = 0
-					playerB = nil
-					playerR = nil
-					game = false
-					Bscore:ChangeProperties({
-					Text = pointsB;
-					})
+        puckP.xv = math.clamp(puckP.xv, -5, 5)
+        puckP.yv = math.clamp(puckP.yv, -5, 5)
+        if math.floor(puckP.xv * 30) / 30 == 0 then puckP.xv = 0 end
+        if math.floor(puckP.yv * 30) / 30 == 0 then puckP.yv = 0 end
+        puckP.x = puckP.x + puckP.xv
+        puckP.y = puckP.y + puckP.yv
+        -- 85*5, 155*5
+        
+        if puckP.y < 0 or puckP.y > (155*5 - 60) then
+            if not (puckP.x > 140 and puckP.x < 240) then
+                puckP.yv = puckP.yv * -1
+                puckP.y = math.clamp(puckP.y, 0, 155*5 - 60)
+            elseif puckP.y < -60 or puckP.y > 155*5 then
+                local winner, wincolor
+                if puckP.y < -60 then
+                    winner = "BLUE"
+                    pointsB = pointsB + 1
+                    wincolor = {0.4, 0.4, 0.8}
+                else
+                    winner = "RED"
+                    pointsR = pointsR + 1
+                    wincolor = {0.8, 0.4, 0.4}
+                end
+                puckP = {
+                    x = 85*5/2 - 30;
+                    y = 155*5/2 - 30;
+                    xv = 0;
+                    yv = 0;
+                    }
+                victory1:ChangeProperties({
+                    Text = winner .. " SCORES";
+                    TextColor3 = Color3.new(wincolor[1], wincolor[2], wincolor[3])
+                })
+                
+                victory2:ChangeProperties({
+                    Text = winner .. " SCORES";
+                    TextColor3 = Color3.new(wincolor[1], wincolor[2], wincolor[3])
+                })
+                
+                task.wait(2)
+                
+                victory1:ChangeProperties({
+                    Text = "";
+                })
+                
+                victory2:ChangeProperties({
+                    Text = "";
+                })
+                
+                Bscore:ChangeProperties({
+                    Text = pointsB;
+                })
+                
+                Rscore:ChangeProperties({
+                    Text = pointsR;
+                })
+                
+                if pointsR > 4 or pointsB > 4 then
+                    victory1:ChangeProperties({
+                        Text = winner .. " WINS";
+                        TextColor3 = Color3.new(wincolor[1], wincolor[2], wincolor[3])
+                    })
+                
+                    victory2:ChangeProperties({
+                        Text = winner .. " WINS";
+                        TextColor3 = Color3.new(wincolor[1], wincolor[2], wincolor[3])
+                    })
+                    
+                    task.wait(2)
+                    titleScreen()
+                    pointsB = 0
+                    pointsR = 0
+                    playerB = nil
+                    playerR = nil
+                    game = false
+                    Bscore:ChangeProperties({
+                    Text = pointsB;
+                    })
 
-					Rscore:ChangeProperties({
-					Text = pointsR;
-					})
-					victory1:ChangeProperties({
-						Text = "";
-						TextColor3 = Color3.new(wincolor[1], wincolor[2], wincolor[3])
-					})
-				
-					victory2:ChangeProperties({
-						Text = "";
-						TextColor3 = Color3.new(wincolor[1], wincolor[2], wincolor[3])
-					})
-				end
-			
-				puckP = {
-				x = 85*5/2 - 30;
-				y = 155*5/2 - 30;
-				xv = 0;
-				yv = 0;
-				}
-			end
-		end
-		
-		if puckP.x < 30 or puckP.x > (85*5 - 60) then
-			puckP.xv = puckP.xv * -1
-			puckP.x = math.clamp(puckP.x, 0, 85*5 - 60)
+                    Rscore:ChangeProperties({
+                    Text = pointsR;
+                    })
+                    victory1:ChangeProperties({
+                        Text = "";
+                        TextColor3 = Color3.new(wincolor[1], wincolor[2], wincolor[3])
+                    })
+                
+                    victory2:ChangeProperties({
+                        Text = "";
+                        TextColor3 = Color3.new(wincolor[1], wincolor[2], wincolor[3])
+                    })
+                end
+            end
+        end
+        
+        if puckP.x < 30 or puckP.x > (85*5 - 60) then
+            puckP.xv = puckP.xv * -1
+            puckP.x = math.clamp(puckP.x, 0, 85*5 - 60)
 
-		end
+        end
 
-		puck:ChangeProperties({
-			Position = UDim2.fromOffset(puckP.x, puckP.y)
-		})
-	end
-	
+        puck:ChangeProperties({
+            Position = UDim2.fromOffset(puckP.x, puckP.y)
+        })
+    end
 end
