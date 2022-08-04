@@ -339,7 +339,7 @@ local placing = false
 
 
 function StartLoop()
-while task.wait() and inGame do
+while task.wait(speed) and inGame do
 	if current then
 		if not TestCollision(currentTab, 0, 1) then
 			currentY = currentY + 1
