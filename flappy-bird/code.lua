@@ -1,6 +1,7 @@
 local Screen = GetPartFromPort(1, "Screen")
 local Keyboard = GetPartFromPort(1, "Keyboard")
-local bestScore = 0
+local Disk = GetPartFromPort(1, "Disk")
+local bestScore = Disk:Read("HighScore") or 0
 
 Screen:ClearElements()
 
@@ -215,6 +216,7 @@ local function endGame()
             local new
             if score > bestScore then
                 bestScore = score
+                Disk:Write("HighScore", bestScore)
                 bestScoreVal.Update(tostring(score))
                 new = Screen:CreateElement("ImageLabel", {
                     Size = UDim2.fromScale(0.1, 0.04),
