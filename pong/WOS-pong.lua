@@ -13,7 +13,7 @@ function initTitle()
 		Position = UDim2.fromScale(0, 0);
 		TextStrokeTransparency = 0;
 		Font = "Arcade";
-		Text = "POG";
+		Text = "PONG";
 		TextScaled = true;
 		TextColor3 = Color3.new(1, 1, 1);
 		BackgroundTransparency = 1;
