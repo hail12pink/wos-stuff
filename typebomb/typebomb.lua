@@ -162,6 +162,7 @@ title()
 
 local timer = 0
 while true do
+    task.wait()
 	if game then
 		timer = timer + 0.1
 		if timer > 5 then
