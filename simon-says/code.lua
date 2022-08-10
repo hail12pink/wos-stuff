@@ -21,7 +21,6 @@ local statetext = graphics:CreateElement("TextBox", {
 	Position = UDim2.fromScale(0.25, 0);
 	TextStrokeTransparency = 0.5;
 	Font = "Arcade";
-	Text = "WAITING";
 	TextScaled = true;
 	TextColor3 = Color3.new(1, 1, 1);
 	BackgroundTransparency = 1;
@@ -85,6 +84,7 @@ local function onColorClick(color, i, rect, skipCheck)
 					gameover = true
 					hold = true
 					plrSequence = {}
+                    pattern = {}
 					updateScore()
 					PressButtonEnabled = false
 					task.wait(1)
@@ -97,15 +97,12 @@ local function onColorClick(color, i, rect, skipCheck)
 end
 
 function rand()
-	pattern = {}
 	PressButtonEnabled = false
 	plrSequence = {}
 	updateState("COPY THIS")
 	hold = false
 	task.wait(0.5)
-	for i = 1, math.random(3, 3 + (score/2)) do
-		table.insert(pattern, math.random(1, 4))
-	end
+	table.insert(pattern, math.random(1, 4))
 	for i,v in pairs(pattern) do
 		onColorClick(colorstring[v], v, colorrects[v], true)
 		task.wait(1 - (score / 10))
@@ -119,6 +116,7 @@ function rand()
 	updateState("GAME OVER")
 	score = 0
 	plrSequence = {}
+    pattern = {}
 	updateScore()
 	gameover = true
 	PressButtonEnabled = false
