@@ -311,6 +311,7 @@ while true do
         end
         yv = math.clamp(yv, -1, 1)
         y += (yv + yv_old) * 0.5 * dt
+	y = math.clamp(y, -0.2, 1)
         if AABBcoll(hitbox, ground) then
             y = 0.8
             yv = 0
