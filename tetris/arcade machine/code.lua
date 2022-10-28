@@ -386,6 +386,7 @@ while task.wait(speed) and inGame do
 					current = nil
                     score = 0
                     level = 0
+                    speed = 0.3
                     levelProg = 0
                     lines = 0
                     
